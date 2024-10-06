@@ -1,6 +1,7 @@
 import { Paper, styled } from "@mui/material";
 import { HeaderText } from "../constants/styleConstants";
-import { COLORS } from "../constants/constants";
+import { useContext } from "react";
+import { CardsContext } from "../contexts/cardsContext";
 
 const CardContainer = styled('div')`
   display: flex;
@@ -9,7 +10,7 @@ const CardContainer = styled('div')`
 `;
 
 const SCard = styled(Paper)`
-  background-color: ${COLORS.mblue};
+  background-color: ${props => props.bgcolor};
   margin: 1rem;
   width: 75vw;
   height: 80vh;
@@ -18,7 +19,6 @@ const SCard = styled(Paper)`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: uppercase;
 `;
 
 export interface CardComponentProps {
@@ -26,9 +26,10 @@ export interface CardComponentProps {
 }
 
 export const CardComponent = ({text}: CardComponentProps) => {
+  const { cardColor } = useContext(CardsContext);
   return (
     <CardContainer>
-      <SCard elevation={8}>
+      <SCard elevation={8} bgcolor={cardColor}>
         <HeaderText variant="h4" sx={{ px: 5 }}>{text}</HeaderText>
       </SCard>
     </CardContainer>

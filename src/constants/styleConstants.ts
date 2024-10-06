@@ -9,6 +9,13 @@ export const HeaderText = styled(Typography)`
     }
 `;
 
+export const SButtonRow = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: middle;
+  margin: 1rem;
+`;
+
 export const SButton = styled(Button)`
   margin: 0.5rem;
   width: 15rem;

@@ -1,54 +1,41 @@
 import { useEffect, useState } from "react";
 import { CardComponent } from "./card";
-import { sample } from "lodash";
-import { SButton } from "../constants/styleConstants";
-import styled from "styled-components";
+import { SButton, SButtonRow } from "../constants/styleConstants";
+
 export interface RandomizerProps {
   cards: string[];
 }
 
-const SButtonRow = styled("div")`
-  display: flex;
-  justify-content: center;
-  margin: 2rem;
-`;
-
 export const CardRandomizer = ({ cards }: RandomizerProps) => {
-  const [previousCard, setPreviousCard] = useState("");
-  const [currentCard, setCurrentCard] = useState("");
-  const [nextCard, setNextCard] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [lastIndex, setLastIndex] = useState(0);
 
   useEffect(() => {
-    setPreviousCard("");
-    setNextCard("");
-    setCurrentCard(sample(cards) || "");
+    setLastIndex(cards.length - 1);
+    setCurrentIndex(0);
   }, [cards]);
 
   const handlePreviousClick = () => {
-    setNextCard(currentCard);
-    setCurrentCard(previousCard);
-    setPreviousCard("");
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   const handleNextClick = () => {
-    setPreviousCard(currentCard);
-    if (nextCard) {
-      setCurrentCard(nextCard);
-      setNextCard("");
-    } else {
-        const newCard = sample(cards);
-        if (newCard) {
-          setCurrentCard(newCard);
-        }
-    }
+    const nextIndex = currentIndex + 1;
+    setCurrentIndex(nextIndex > lastIndex ? 0 : nextIndex);
   };
 
   return (
     <>
-      <CardComponent text={currentCard} />{" "}
+      <CardComponent text={cards[currentIndex]} />{" "}
       <SButtonRow>
-        {!!previousCard && (
-          <SButton variant="contained" color="secondary" onClick={handlePreviousClick}>
+        {!!currentIndex && (
+          <SButton
+            variant="contained"
+            color="secondary"
+            onClick={handlePreviousClick}
+          >
             Previous Card
           </SButton>
         )}

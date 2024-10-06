@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
+import { shuffle } from "lodash";
+import { styled } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { CardsContext } from "../contexts/cardsContext";
 import { useCSVReader, usePapaParse } from "react-papaparse";
 import { HeaderText, SButton } from "../constants/styleConstants";
 import { songs } from "../assets/songs";
-import { styled } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { waysToPlay } from "../assets/waystoplay";
+import { COLORS } from "../constants/constants";
 
 const SConfigureRow = styled("div")`
   display: flex;
@@ -12,12 +15,20 @@ const SConfigureRow = styled("div")`
 `;
 
 export const Configure = () => {
-  const { cards, setCards } = useContext(CardsContext);
+  const { cards, setCards, setCardColor } = useContext(CardsContext);
   const [showConfigure, setShowConfigure] = useState(false);
   const { readString } = usePapaParse();
   const { CSVReader } = useCSVReader();
+  const showRules = () => {
+    loadLocalFile(waysToPlay, true);
+  };
+
   const parseSongList = () => {
-    readString(songs, {
+    loadLocalFile(songs, false);
+  };
+
+  const loadLocalFile = (local: string, isRules = false) => {
+    readString(local, {
       header: true,
       worker: true,
       complete: (results: any) => {
@@ -26,7 +37,8 @@ export const Configure = () => {
           const song = Object.values(d)[0] as string;
           if (song) songList.push(song);
         });
-        setCards(songList);
+        setCards(isRules ? songList : shuffle(songList));
+        setCardColor(isRules ? COLORS.cordovan : COLORS.mblue);
         setShowConfigure(false);
       },
     });
@@ -45,14 +57,20 @@ export const Configure = () => {
               <SettingsIcon onClick={() => setShowConfigure(false)} />
             </SConfigureRow>
           )}
+          <SButton variant="contained" color="secondary" onClick={showRules}>
+            How to Play
+          </SButton>
           <SButton variant="contained" onClick={parseSongList}>
             Play Song Game
           </SButton>
           <CSVReader
             onUploadAccepted={(results: any) => {
+              const songList: string[] = [];
               const value: string[][] = results.data;
-              const filtered = value.filter((_, i) => i !== 0);
-              setCards(value.map((val) => val[0]));
+              value.forEach((val) => {
+                if (val[0]) songList.push(val[0]);
+              });
+              setCards(shuffle(songList));
               setShowConfigure(false);
             }}
             config={{ worker: true }}
