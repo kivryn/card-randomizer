@@ -33,7 +33,7 @@ export const Configure = () => {
       worker: true,
       complete: (results: any) => {
         const songList: string[] = [];
-        results.data.map((d: any) => {
+        results.data.forEach((d: any) => {
           const song = Object.values(d)[0] as string;
           if (song) songList.push(song);
         });
@@ -57,12 +57,16 @@ export const Configure = () => {
               <SettingsIcon onClick={() => setShowConfigure(false)} />
             </SConfigureRow>
           )}
-          <SButton variant="contained" color="secondary" onClick={showRules}>
-            How to Play
-          </SButton>
-          <SButton variant="contained" onClick={parseSongList}>
-            Play Song Game
-          </SButton>
+          <SConfigureRow>
+            <SButton variant="contained" color="secondary" onClick={showRules}>
+              How to Play
+            </SButton>
+          </SConfigureRow>
+          <SConfigureRow>
+            <SButton variant="contained" onClick={parseSongList}>
+              Play Song Game
+            </SButton>
+          </SConfigureRow>
           <CSVReader
             onUploadAccepted={(results: any) => {
               const songList: string[] = [];
