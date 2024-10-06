@@ -1,6 +1,11 @@
 import { useContext, useState } from "react";
 import { CardsContext } from "../contexts/cardsContext";
 import { HeaderText, SButton, SButtonRow } from "../constants/styleConstants";
+import styled from "styled-components";
+
+const CounterRow = styled(SButtonRow)`
+    padding-bottom: 2rem;
+`
 
 export const Counter = () => {
   const { cards } = useContext(CardsContext);
@@ -12,7 +17,7 @@ export const Counter = () => {
           <HeaderText variant="h4" sx={{ p: 1 }}>
             {counter}
           </HeaderText>
-          <SButtonRow>
+          <CounterRow>
             <SButton
               variant="outlined"
               color="warning"
@@ -34,7 +39,7 @@ export const Counter = () => {
             >
               +
             </SButton>
-          </SButtonRow>
+          </CounterRow>
         </>
       )}
     </>
