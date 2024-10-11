@@ -15,7 +15,7 @@ const SCard = styled(Paper)`
   width: 75vw;
   height: 80vh;
   max-width: 20rem;
-  max-height: 25rem;
+  max-height: 27rem;
   display: flex;
   justify-content: center;
   align-items: center;
