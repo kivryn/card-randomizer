@@ -86,6 +86,7 @@ export const Configure = () => {
                 if (val[0]) songList.push(val[0]);
               });
               setCards(shuffle(songList));
+              setCardColor(COLORS.mblue);
               setShowConfigure(false);
             }}
             config={{ worker: true }}
